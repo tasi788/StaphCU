@@ -146,7 +146,7 @@ def processItem(item,db,api):
             if canPunish(api,item['message']['chat']['id']):
                 api.query('kickChatMember',{'chat_id':item['message']['chat']['id'],'user_id':item['message']['from']['id'],'until_date':int(time.time()+10)})
                 api.query('deleteMessage',{'chat_id':item['message']['chat']['id'],'message_id':item['message']['message_id']})
-                api.sendMessage(item['message']['chat']['id'],'用戶 '+tg.getNameRep(item['message']['from'])+' 已於 '+datetime.datetime.fromtimestamp(int(db['noir'].getItem(str(item['message']['from']['id']),'date'))).isoformat()+'Z 被標記為仿冒用戶。該用戶已被自動踢出。')
+                api.sendMessage(item['message']['chat']['id'],'用戶 '+tg.getNameRep(item['message']['from'])+'(<pre>'+item['message']['from']['id']+'</pre>)'+' 已於 '+datetime.datetime.fromtimestamp(int(db['noir'].getItem(str(item['message']['from']['id']),'date'))).isoformat()+'Z 被標記為仿冒用戶。該用戶已被自動踢出。')
             else:
                 api.sendMessage(item['message']['chat']['id'],'該用戶（'+tg.getNameRep(item['message']['from'])+'）已被標記為仿冒用戶，請各位注意。',{'reply_to_message_id':item['message']['message_id']})
         elif 'new_chat_members' in item['message'] and item['message']['chat']['type'] in ('group','supergroup'):
